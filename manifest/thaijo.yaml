@@ -3,6 +3,16 @@ kind: Namespace
 metadata:
   name: thaijo
 ---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: thaijo-api-secrets
+  namespace: thaijo
+type: Opaque
+stringData:
+  GEMINI_API_KEY: ""
+  OPENAI_API_KEY: ""
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -32,6 +42,16 @@ spec:
           env:
             - name: REDIS_URL
               value: redis://thaijo-redis:6379/0
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: thaijo-api-secrets
+                  key: GEMINI_API_KEY
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: thaijo-api-secrets
+                  key: OPENAI_API_KEY
           command:
             - uvicorn
             - main:app
