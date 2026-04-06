@@ -27,7 +27,7 @@ spec:
               app: thaijo-api
       containers:
         - name: api
-          image: taotoxicboy/thaijo:dev-20260224.3
+          image: taotoxicboy/thaijo:dev-20260406
           imagePullPolicy: IfNotPresent
           env:
             - name: REDIS_URL
