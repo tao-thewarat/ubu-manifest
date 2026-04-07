@@ -4,6 +4,8 @@ metadata:
   name: pgadmin
   namespace: pgadmin
 spec:
+  strategy:
+    type: Recreate
   replicas: 1
   selector:
     matchLabels:
@@ -13,10 +15,17 @@ spec:
       labels:
         app: pgadmin
     spec:
+      securityContext:
+        fsGroup: 5050
+        fsGroupChangePolicy: OnRootMismatch
       containers:
         - name: pgadmin
           image: dpage/pgadmin4:9.3
           imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsUser: 5050
+            runAsGroup: 5050
+            runAsNonRoot: true
           env:
             - name: PGADMIN_DEFAULT_EMAIL
               valueFrom:
@@ -28,12 +37,14 @@ spec:
                 secretKeyRef:
                   name: pgadmin-secrets
                   key: PGADMIN_DEFAULT_PASSWORD
+            - name: PGADMIN_LISTEN_PORT
+              value: "5050"
             - name: PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION
               value: "True"
             - name: PGADMIN_CONFIG_LOGIN_BANNER
               value: "'Authorized access only'"
           ports:
-            - containerPort: 80
+            - containerPort: 5050
               name: http
           volumeMounts:
             - name: pgadmin-data
