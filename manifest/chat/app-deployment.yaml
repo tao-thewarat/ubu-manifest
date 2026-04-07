@@ -22,7 +22,7 @@ spec:
               app: chat-app
       containers:
         - name: app
-          image: gameme/chatapp:1.4
+          image: gameme/chatapp:1.5
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
