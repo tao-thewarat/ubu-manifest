@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thaijo-redis
+  namespace: thaijo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: thaijo-redis
+  template:
+    metadata:
+      labels:
+        app: thaijo-redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:7-alpine
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 6379
+              name: redis

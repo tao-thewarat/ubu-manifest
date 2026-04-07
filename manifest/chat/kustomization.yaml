@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - namespace.yaml
+  - configmap.yaml
+  - secret.yaml
+  - app-deployment.yaml
+  - app-service.yaml
+  - postgres-statefulset.yaml
+  - postgres-service.yaml
+  - minio-statefulset.yaml
+  - minio-service.yaml
+  - clusterissuer.yaml
+  - ingress.yaml

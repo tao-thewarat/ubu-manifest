@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thaijo-api
+  namespace: thaijo
+spec:
+  replicas: 9
+  selector:
+    matchLabels:
+      app: thaijo-api
+  template:
+    metadata:
+      labels:
+        app: thaijo-api
+    spec:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: thaijo-api
+      containers:
+        - name: api
+          image: taotoxicboy/thaijo:dev-20260406
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: REDIS_URL
+              value: redis://thaijo-redis:6379/0
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: thaijo-api-secrets
+                  key: GEMINI_API_KEY
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: thaijo-api-secrets
+                  key: OPENAI_API_KEY
+          command:
+            - uvicorn
+            - main:app
+            - --host
+            - 0.0.0.0
+            - --port
+            - "8000"
+          ports:
+            - containerPort: 8000
+              name: http
