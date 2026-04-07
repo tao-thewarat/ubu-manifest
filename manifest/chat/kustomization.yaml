@@ -10,5 +10,4 @@ resources:
   - postgres-service.yaml
   - minio-statefulset.yaml
   - minio-service.yaml
-  - clusterissuer.yaml
   - ingress.yaml

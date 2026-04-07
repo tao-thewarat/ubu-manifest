@@ -7,5 +7,4 @@ resources:
   - redis-deployment.yaml
   - api-service.yaml
   - redis-service.yaml
-  - clusterissuer.yaml
   - ingress.yaml
