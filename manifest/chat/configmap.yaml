@@ -12,3 +12,4 @@ data:
   MINIO_PORT: "9000"
   MINIO_USE_SSL: "false"
   MINIO_BUCKET: uploads
+  THAIJO_API_URL: https://thaijo.iaaaiksu.com/api/v1/thaijo
