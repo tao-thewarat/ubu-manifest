@@ -14,6 +14,13 @@ spec:
       labels:
         app: chat-minio
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-role.kubernetes.io/control-plane
+                    operator: DoesNotExist
       containers:
         - name: minio
           image: minio/minio:RELEASE.2025-02-28T09-55-16Z

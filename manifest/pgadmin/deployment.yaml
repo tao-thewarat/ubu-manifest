@@ -15,6 +15,13 @@ spec:
       labels:
         app: pgadmin
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-role.kubernetes.io/control-plane
+                    operator: DoesNotExist
       securityContext:
         fsGroup: 5050
         fsGroupChangePolicy: OnRootMismatch
