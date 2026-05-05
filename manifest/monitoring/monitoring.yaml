@@ -24,6 +24,13 @@ spec:
         grafana:
           adminPassword: 8Luy4gL0eSSp
           defaultDashboardsTimezone: browser
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: node-role.kubernetes.io/control-plane
+                        operator: DoesNotExist
           ingress:
             enabled: true
             ingressClassName: nginx
@@ -42,6 +49,8 @@ spec:
             enabled: true
             storageClassName: longhorn
             size: 10Gi
+            annotations:
+              volume.longhorn.io/number-of-replicas: "2"
           service:
             type: ClusterIP
         kubeControllerManager:
@@ -53,8 +62,18 @@ spec:
         prometheus:
           prometheusSpec:
             retention: 15d
+            affinity:
+              nodeAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  nodeSelectorTerms:
+                    - matchExpressions:
+                        - key: node-role.kubernetes.io/control-plane
+                          operator: DoesNotExist
             storageSpec:
               volumeClaimTemplate:
+                metadata:
+                  annotations:
+                    volume.longhorn.io/number-of-replicas: "2"
                 spec:
                   accessModes:
                     - ReadWriteOnce
