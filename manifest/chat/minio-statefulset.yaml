@@ -52,8 +52,6 @@ spec:
   volumeClaimTemplates:
     - metadata:
         name: minio-data
-        annotations:
-          volume.longhorn.io/number-of-replicas: "2"
       spec:
         accessModes:
           - ReadWriteOnce
